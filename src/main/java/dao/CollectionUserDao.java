@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class CollectionUserDao implements IUserDao {
     private final ArrayList<User> users;
+    private static long currentUserId = 0;
 
     public CollectionUserDao() {
         users = new ArrayList<>();
@@ -36,15 +37,17 @@ public class CollectionUserDao implements IUserDao {
     }
 
     @Override
-    public boolean AddUser(User user) {
+    public User AddUser(User user) {
         for (User oldUser : users)
         {
             if (oldUser.getName().toLowerCase().equals(user.getName().toLowerCase()))
             {
-                return false;
+                return null;
             }
         }
+        user.setId(currentUserId);
+        currentUserId++;
         users.add(user);
-        return true;
+        return user;
     }
 }

@@ -26,7 +26,7 @@ public class UserManager {
     }
 
     //Return user to immediately be able to log in
-    public boolean AddUser(User user)
+    public User AddUser(User user)
     {
         return dao.AddUser(user);
     }

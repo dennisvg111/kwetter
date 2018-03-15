@@ -1,9 +1,13 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @XmlRootElement
@@ -14,17 +18,22 @@ public class User implements Serializable {
     private String name;
     private String hashedPassword;
     private String bio;
-    @OneToMany
-    private ArrayList<User> followers;
-    @OneToMany
-    private ArrayList<User> following;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
+    @JsonIgnore
+    private List<User> followers = new ArrayList<>();
+
+    @ManyToMany
+    @JsonIgnore
+    private List<User> following = new ArrayList<>();
+
     private String location;
     private String website;
     private String profilePicture;
     private Role role;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
-    private ArrayList<Kweet> kweets;
+    private List<Kweet> kweets = new ArrayList<>();
 
     public enum Role {
         USER,
@@ -72,7 +81,7 @@ public class User implements Serializable {
         this.bio = bio;
     }
 
-    public ArrayList<User> getFollowers() {
+    public List<User> getFollowers() {
         return followers;
     }
 
@@ -89,7 +98,7 @@ public class User implements Serializable {
         }
     }
 
-    public ArrayList<User> getFollowing() {
+    public List<User> getFollowing() {
         return following;
     }
 
@@ -129,7 +138,7 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public ArrayList<Kweet> getKweets() {
+    public List<Kweet> getKweets() {
         return kweets;
     }
 

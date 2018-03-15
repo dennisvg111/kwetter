@@ -7,7 +7,7 @@ import java.util.List;
 public abstract class DaoFacade<T> {
     private Class<T> entityClass;
 
-    @PersistenceContext(unitName = "KwetterPU")
+    @PersistenceContext(unitName = "jpa-example")
     private EntityManager entityManager;
 
     public DaoFacade(Class<T> entityClass) {
@@ -31,7 +31,6 @@ public abstract class DaoFacade<T> {
         return entityManager.find(entityClass, auth);
     }
 
-    @SuppressWarnings("unchecked")
     public List<T> findAll() {
         return entityManager.createQuery(String.format("FROM %s", this.entityClass.getName()))
                 .getResultList();
