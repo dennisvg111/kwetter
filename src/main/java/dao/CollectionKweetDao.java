@@ -16,17 +16,14 @@ public class CollectionKweetDao implements IKweetDao {
         kweets = new ArrayList<Kweet>();;
     }
 
-    public Kweet GetKweetById(long id) {
+    @Override
+    public Kweet Read(long id)
+    {
         for (Kweet kweet : kweets) {
             if (kweet.getId() == id) {
                 return kweet;
             }
         }
-        return null;
-    }
-
-    @Override
-    public Kweet Read(long id) {
         return null;
     }
 
@@ -58,8 +55,8 @@ public class CollectionKweetDao implements IKweetDao {
     }
 
     @Override
-    public void Delete(Kweet kweet) {
-
+    public void Delete(long id) {
+        kweets.remove(Read(id));
     }
 
     @Override

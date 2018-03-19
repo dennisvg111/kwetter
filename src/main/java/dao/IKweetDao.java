@@ -12,7 +12,7 @@ public interface IKweetDao {
     List<Kweet> FindKweets(String search);
     Kweet Create(Kweet kweet);
     Kweet Update(Kweet kweet);
-    void Delete(Kweet kweet);
+    void Delete(long id);
     List<Kweet> GetFeed(User user);
 
 

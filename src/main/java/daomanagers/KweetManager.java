@@ -33,7 +33,7 @@ public class KweetManager {
 
     public Kweet EditKweet(Kweet kweet) { return dao.Update(kweet); }
 
-    public void RemoveKweet(Kweet kweet) { dao.Delete(kweet); }
+    public void RemoveKweet(long id) { dao.Delete(id); }
 
     public List<Kweet> GetFeed(User user) { return dao.GetFeed(user); }
 

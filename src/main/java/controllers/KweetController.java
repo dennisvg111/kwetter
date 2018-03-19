@@ -90,13 +90,14 @@ public class KweetController {
     }
 
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeKweet(Kweet kweet) {
-        if (kweet == null) {
+    @Path("/{id}/remove")
+    public Response removeUser(@PathParam("id") long id) {
+        if (kweetManager.getKweet(id) == null)
+        {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        kweetManager.RemoveKweet(kweet);
+        kweetManager.RemoveKweet(id);
 
         return Response.ok().build();
     }

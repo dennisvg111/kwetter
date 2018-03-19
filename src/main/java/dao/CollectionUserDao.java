@@ -65,13 +65,8 @@ public class CollectionUserDao implements IUserDao {
     }
 
     @Override
-    public void Delete(User user) {
-        User existingUser = Read(user.getId());
-        if (existingUser == null)
-        {
-            return;
-        }
-        users.remove(existingUser);
+    public void Delete(long id) {
+        users.remove(Read(id));
     }
 
     @Override

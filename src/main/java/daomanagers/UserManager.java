@@ -50,7 +50,7 @@ public class UserManager {
 
     public User EditUser(User user) { return dao.Update(user); }
 
-    public void RemoveUser(User user) { dao.Delete(user); }
+    public void RemoveUser(long id) { dao.Delete(id); }
 
     public List<User> GetFollowers(long id) { return dao.GetFollowers(id); }
 

@@ -9,7 +9,7 @@ public interface IUserDao {
     User Create(User user);
     User Read(long id);
     User Update(User user);
-    void Delete(User user);
+    void Delete(long id);
     List<User> All();
 
     List<User> GetFollowing(long id);

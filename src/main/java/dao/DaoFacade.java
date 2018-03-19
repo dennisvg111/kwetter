@@ -3,6 +3,7 @@ package dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class DaoFacade<T> {
@@ -32,7 +33,7 @@ public abstract class DaoFacade<T> {
             return entityManager.merge(entity);
         }
         idField.setAccessible(true);
-        Long id = null;
+        long id;
         try {
             id = idField.getLong(entity);
         } catch (IllegalAccessException e) {
@@ -46,7 +47,10 @@ public abstract class DaoFacade<T> {
             f.setAccessible(true);
             try {
                 if (f.get(entity) != null) {
-                    f.set(updated, f.get(entity));
+                    if (!(f.get(entity) instanceof Collection) || ((Collection)f.get(entity)).size() > 0)
+                    {
+                        f.set(updated, f.get(entity));
+                    }
                 }
             } catch (IllegalAccessException e) {
                 updateOld = true;
@@ -72,7 +76,7 @@ public abstract class DaoFacade<T> {
                 .getResultList();
     }
 
-    public void Delete(T entity) {
-        entityManager.remove(entity);
+    public void Delete(long id) {
+        entityManager.remove(Read(id));
     }
 }

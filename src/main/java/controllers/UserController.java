@@ -46,14 +46,14 @@ public class UserController {
     }
 
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response removeUser(User user) {
-        if (userManager.GetUser(user.getName()) == null)
+    @Path("/{id}/remove")
+    public Response removeUser(@PathParam("id") long id) {
+        if (userManager.GetUser(id) == null)
         {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        userManager.RemoveUser(user);
+        userManager.RemoveUser(id);
 
         return Response.ok().build();
     }
