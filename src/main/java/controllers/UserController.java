@@ -25,6 +25,13 @@ public class UserController {
         return Response.ok(userManager.GetUser(id)).build();
     }
 
+    @GET
+    @Path("/all")
+    public Response get()
+    {
+        return Response.ok(userManager.GetUsers()).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postUser(User user) {
@@ -54,7 +61,7 @@ public class UserController {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response editUser(User user) {
-        if (userManager.GetUser(user.getName()) == null)
+        if (userManager.GetUser(user.getId()) == null)
         {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

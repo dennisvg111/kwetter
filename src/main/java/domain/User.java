@@ -2,6 +2,7 @@ package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -12,14 +13,19 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+
 @Entity
 @XmlRootElement
 public class User implements Serializable {
     @Id
     @GeneratedValue
     private long id;
+
+    @Column(unique=true)
     private String name;
-    @JsonIgnore
+
+    @JsonProperty(access = WRITE_ONLY)
     private String hashedPassword;
     private String bio;
 

@@ -2,6 +2,7 @@ package dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.lang.reflect.Field;
 import java.util.List;
 
 public abstract class DaoFacade<T> {
@@ -19,8 +20,47 @@ public abstract class DaoFacade<T> {
         return entity;
     }
 
+    //this method first tries to replace all non-null fields of entity into the existing version
+    //if that does not work fall back to overwriting the entity
     public T Update(T entity) {
-        return entityManager.merge(entity);
+
+        //based on https://stackoverflow.com/a/2146140/5022761
+        Field idField = null;
+        try {
+            idField = entity.getClass().getDeclaredField("id");
+        } catch (NoSuchFieldException e) {
+            return entityManager.merge(entity);
+        }
+        idField.setAccessible(true);
+        Long id = null;
+        try {
+            id = idField.getLong(entity);
+        } catch (IllegalAccessException e) {
+            return entityManager.merge(entity);
+        }
+
+        T updated = Read(id);
+        boolean updateOld = false;
+
+        for (Field f : entity.getClass().getDeclaredFields()) {
+            f.setAccessible(true);
+            try {
+                if (f.get(entity) != null) {
+                    f.set(updated, f.get(entity));
+                }
+            } catch (IllegalAccessException e) {
+                updateOld = true;
+                break;
+            }
+            f.setAccessible(false);
+        }
+
+        if (updateOld)
+        {
+            return entityManager.merge(entity);
+        }
+
+        return entityManager.merge(updated);
     }
 
     public T Read(long id) {

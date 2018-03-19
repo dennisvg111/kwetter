@@ -37,7 +37,14 @@ public class UserManager {
 
     public List<User> GetFollowing(long id) {return dao.GetFollowing(id); }
 
-    public boolean Follow(Long userId, Long followedUserId) { return dao.Follow(userId, followedUserId); }
+    public boolean Follow(Long userId, Long followedUserId)
+    {
+        if (userId == followedUserId)
+        {
+            return false;
+        }
+        return dao.Follow(userId, followedUserId);
+    }
 
     public boolean Unfollow(Long userId, Long followedUserId) { return dao.Unfollow(userId, followedUserId); }
 
@@ -46,4 +53,8 @@ public class UserManager {
     public void RemoveUser(User user) { dao.Delete(user); }
 
     public List<User> GetFollowers(long id) { return dao.GetFollowers(id); }
+
+    public List<User> GetUsers() {
+        return dao.All();
+    }
 }
