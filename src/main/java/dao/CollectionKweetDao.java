@@ -25,6 +25,11 @@ public class CollectionKweetDao implements IKweetDao {
         return null;
     }
 
+    @Override
+    public Kweet Read(long id) {
+        return null;
+    }
+
     public ArrayList<Kweet> GetKweetsFromUser(User user) {
         ArrayList<Kweet> foundKweets = new ArrayList<Kweet>();
         for (Kweet kweet : kweets) {
@@ -40,7 +45,7 @@ public class CollectionKweetDao implements IKweetDao {
     }
 
     @Override
-    public Kweet AddKweet(Kweet kweet) {
+    public Kweet Create(Kweet kweet) {
         kweet.setId(currentKweetId);
         currentKweetId++;
         kweets.add(kweet);
@@ -48,7 +53,22 @@ public class CollectionKweetDao implements IKweetDao {
     }
 
     @Override
-    public List<Kweet> GetKweets() {
+    public Kweet Update(Kweet kweet) {
+        return null;
+    }
+
+    @Override
+    public void Delete(Kweet kweet) {
+
+    }
+
+    @Override
+    public List<Kweet> GetFeed(User user) {
+        return null;
+    }
+
+    @Override
+    public List<Kweet> All() {
         return kweets;
     }
 }

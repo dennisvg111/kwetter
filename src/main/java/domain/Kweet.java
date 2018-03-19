@@ -1,5 +1,7 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,7 +13,7 @@ import java.util.Date;
 
 @Entity
 @XmlRootElement
-public class Kweet implements Serializable {
+public class Kweet implements Serializable, Comparable<Kweet> {
     @GeneratedValue
     @Id
     private long id;
@@ -55,4 +57,8 @@ public class Kweet implements Serializable {
         this.date = date;
     }
 
+    @Override
+    public int compareTo(Kweet o) {
+        return this.getDate().compareTo(o.getDate()) * -1;
+    }
 }

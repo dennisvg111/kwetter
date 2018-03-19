@@ -1,14 +1,19 @@
 package daomanagers;
 
 import dao.IKweetDao;
+import dao.JPA;
 import domain.Kweet;
+import domain.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@ApplicationScoped
+@Transactional
 public class KweetManager {
+
+    @JPA
     @Inject
     private IKweetDao dao;
 
@@ -17,12 +22,27 @@ public class KweetManager {
     }
 
     public Kweet getKweet(long id) {
-        return dao.GetKweetById(id);
+        return dao.Read(id);
     }
 
-    public Kweet AddKweet(Kweet kweet) { return dao.AddKweet(kweet); }
+    public Kweet AddKweet(Kweet kweet) { return dao.Create(kweet); }
 
     public List<Kweet> getKweets() {
-        return dao.GetKweets();
+        return dao.All();
+    }
+
+    public Kweet EditKweet(Kweet kweet) { return dao.Update(kweet); }
+
+    public void RemoveKweet(Kweet kweet) { dao.Delete(kweet); }
+
+    public List<Kweet> GetFeed(User user) { return dao.GetFeed(user); }
+
+    public List<Kweet> GetKweetsFromUser(User user) {
+        return dao.GetKweetsFromUser(user);
+    }
+
+    public List<Kweet> Search(String query)
+    {
+        return dao.FindKweets(query);
     }
 }

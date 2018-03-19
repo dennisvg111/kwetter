@@ -1,13 +1,17 @@
 package daomanagers;
 
 import dao.IUserDao;
+import dao.JPA;
 import domain.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
+import java.util.List;
 
-@ApplicationScoped
+@Transactional
 public class UserManager {
+    @JPA
     @Inject
     private IUserDao dao;
 
@@ -22,12 +26,24 @@ public class UserManager {
 
     public User GetUser(long id)
     {
-        return dao.GetUser(id);
+        return dao.Read(id);
     }
 
     //Return user to immediately be able to log in
     public User AddUser(User user)
     {
-        return dao.AddUser(user);
+        return dao.Create(user);
     }
+
+    public List<User> GetFollowing(long id) {return dao.GetFollowing(id); }
+
+    public boolean Follow(Long userId, Long followedUserId) { return dao.Follow(userId, followedUserId); }
+
+    public boolean Unfollow(Long userId, Long followedUserId) { return dao.Unfollow(userId, followedUserId); }
+
+    public User EditUser(User user) { return dao.Update(user); }
+
+    public void RemoveUser(User user) { dao.Delete(user); }
+
+    public List<User> GetFollowers(long id) { return dao.GetFollowers(id); }
 }

@@ -14,37 +14,25 @@ public abstract class DaoFacade<T> {
         this.entityClass = entityClass;
     }
 
-    public T create(T entity) {
+    public T Create(T entity) {
         entityManager.persist(entity);
         return entity;
     }
 
-    public T update(T entity) {
+    public T Update(T entity) {
         return entityManager.merge(entity);
     }
 
-    public T findById(long id) {
+    public T Read(long id) {
         return entityManager.find(entityClass, id);
     }
 
-    public T findByauth(String auth) {
-        return entityManager.find(entityClass, auth);
-    }
-
-    public List<T> findAll() {
-        return entityManager.createQuery(String.format("FROM %s", this.entityClass.getName()))
+    public List<T> All() {
+        return entityManager.createQuery("SELECT x FROM " + this.entityClass.getName() + " x")
                 .getResultList();
     }
 
-    public void delete(T entity) {
+    public void Delete(T entity) {
         entityManager.remove(entity);
-    }
-
-    public void deleteById(long id) {
-        T entity = findById(id);
-
-        if (entity != null) {
-            delete(entity);
-        }
     }
 }

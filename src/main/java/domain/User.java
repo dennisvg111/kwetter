@@ -1,6 +1,9 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,6 +19,7 @@ public class User implements Serializable {
     @GeneratedValue
     private long id;
     private String name;
+    @JsonIgnore
     private String hashedPassword;
     private String bio;
 
@@ -33,6 +37,8 @@ public class User implements Serializable {
     private Role role;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    @JsonIgnore
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Kweet> kweets = new ArrayList<>();
 
     public enum Role {
@@ -96,6 +102,29 @@ public class User implements Serializable {
             this.following.add(otherUser);
             otherUser.followers.add(this);
         }
+    }
+
+    public void RemoveFollowing(User otherUser) {
+        for (User user : following)
+        {
+            if (user.getId() == otherUser.getId())
+            {
+                this.following.remove(user);
+                user.followers.remove(this);
+            }
+        }
+    }
+
+    public boolean IsFollowing( User otherUser)
+    {
+        for (User user : following)
+        {
+            if (user.getId() == otherUser.getId())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<User> getFollowing() {

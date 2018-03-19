@@ -7,10 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IKweetDao {
-    Kweet GetKweetById(long id);
-    ArrayList<Kweet> GetKweetsFromUser(User user);
-    ArrayList<Kweet> FindKweets(String search);
-    Kweet AddKweet(Kweet kweet);
+    Kweet Read(long id);
+    List<Kweet> GetKweetsFromUser(User user);
+    List<Kweet> FindKweets(String search);
+    Kweet Create(Kweet kweet);
+    Kweet Update(Kweet kweet);
+    void Delete(Kweet kweet);
+    List<Kweet> GetFeed(User user);
 
-    List<Kweet> GetKweets();
+
+    List<Kweet> All();
 }
