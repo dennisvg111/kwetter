@@ -19,6 +19,11 @@ public class JpaUserDao extends DaoFacade<User> implements IUserDao {
         super(User.class);
     }
 
+    public JpaUserDao(EntityManager entityManager) {
+        super(User.class, entityManager);
+        this.em = entityManager;
+    }
+
     @Override
     public User FindUser(String name) {
         try

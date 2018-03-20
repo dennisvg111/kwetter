@@ -1,5 +1,7 @@
 package dao;
 
+import domain.Kweet;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.reflect.Field;
@@ -16,13 +18,23 @@ public abstract class DaoFacade<T> {
         this.entityClass = entityClass;
     }
 
+    /**
+     * Constructor with given entitymanager for testing purposes
+     */
+    public DaoFacade(Class<T> entityClass, EntityManager entityManager) {
+        this.entityClass = entityClass;
+        this.entityManager = entityManager;
+    }
+
     public T Create(T entity) {
         entityManager.persist(entity);
         return entity;
     }
 
-    //this method first tries to replace all non-null fields of entity into the existing version
-    //if that does not work fall back to overwriting the entity
+    /**
+     * this method first tries to replace all non-null fields of entity into the existing version
+     * if that does not work fall back to overwriting the entity
+     */
     public T Update(T entity) {
 
         //based on https://stackoverflow.com/a/2146140/5022761
@@ -47,8 +59,7 @@ public abstract class DaoFacade<T> {
             f.setAccessible(true);
             try {
                 if (f.get(entity) != null) {
-                    if (!(f.get(entity) instanceof Collection) || ((Collection)f.get(entity)).size() > 0)
-                    {
+                    if (!(f.get(entity) instanceof Collection) || ((Collection) f.get(entity)).size() > 0) {
                         f.set(updated, f.get(entity));
                     }
                 }
@@ -59,8 +70,7 @@ public abstract class DaoFacade<T> {
             f.setAccessible(false);
         }
 
-        if (updateOld)
-        {
+        if (updateOld) {
             return entityManager.merge(entity);
         }
 

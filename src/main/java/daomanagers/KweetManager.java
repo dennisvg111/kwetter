@@ -37,8 +37,8 @@ public class KweetManager {
 
     public List<Kweet> GetFeed(User user) { return dao.GetFeed(user); }
 
-    public List<Kweet> GetKweetsFromUser(User user) {
-        return dao.GetKweetsFromUser(user);
+    public List<Kweet> GetKweetsFromUser(long id) {
+        return dao.GetKweetsFromUser(id);
     }
 
     public List<Kweet> Search(String query)

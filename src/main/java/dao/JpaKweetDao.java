@@ -27,12 +27,17 @@ public class JpaKweetDao extends DaoFacade<Kweet> implements IKweetDao {
         super(Kweet.class);
     }
 
+    public JpaKweetDao(EntityManager entityManager) {
+        super(Kweet.class, entityManager);
+        this.em = entityManager;
+    }
+
     @Override
-    public List<Kweet> GetKweetsFromUser(User user) {
+    public List<Kweet> GetKweetsFromUser(long id) {
         try
         {
             Query query = em.createQuery("SELECT k FROM Kweet k WHERE k.user.id = :id ORDER BY k.date");
-            query.setParameter("id", user.getId());
+            query.setParameter("id", id);
             return query.getResultList();
         }
         catch (Exception exception)

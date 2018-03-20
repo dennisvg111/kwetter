@@ -5,6 +5,7 @@ import domain.Kweet;
 import domain.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CollectionKweetDao implements IKweetDao {
@@ -27,18 +28,27 @@ public class CollectionKweetDao implements IKweetDao {
         return null;
     }
 
-    public ArrayList<Kweet> GetKweetsFromUser(User user) {
+    public ArrayList<Kweet> GetKweetsFromUser(long id)
+    {
         ArrayList<Kweet> foundKweets = new ArrayList<Kweet>();
         for (Kweet kweet : kweets) {
-            if (kweet.getUser().getId() == user.getId()) {
+            if (kweet.getUser().getId() == id) {
                 foundKweets.add(kweet);
             }
         }
         return foundKweets;
     }
 
-    public ArrayList<Kweet> FindKweets(String search) {
-        return null;
+    public ArrayList<Kweet> FindKweets(String search)
+    {
+
+        ArrayList<Kweet> foundKweets = new ArrayList<Kweet>();
+        for (Kweet kweet : kweets) {
+            if (kweet.getContent().toUpperCase().contains(search.toUpperCase())) {
+                foundKweets.add(kweet);
+            }
+        }
+        return foundKweets;
     }
 
     @Override
@@ -51,7 +61,9 @@ public class CollectionKweetDao implements IKweetDao {
 
     @Override
     public Kweet Update(Kweet kweet) {
-        return null;
+        Kweet oldKweet = Read(kweet.getId());
+        kweets.set(kweets.indexOf(oldKweet), kweet);
+        return kweet;
     }
 
     @Override
@@ -61,7 +73,14 @@ public class CollectionKweetDao implements IKweetDao {
 
     @Override
     public List<Kweet> GetFeed(User user) {
-        return null;
+
+        ArrayList<Kweet> foundKweets = new ArrayList<Kweet>();
+        for (User followedUser : user.getFollowing())
+        {
+            foundKweets.addAll(followedUser.getKweets());
+        }
+        Collections.sort(foundKweets);
+        return foundKweets;
     }
 
     @Override

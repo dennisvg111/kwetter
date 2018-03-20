@@ -25,6 +25,11 @@ public class Kweet implements Serializable, Comparable<Kweet> {
 
     public Kweet() {}
 
+    public Kweet(User user, String content) {
+        this.content = content;
+        this.user = user;
+    }
+
     public long getId() {
         return id;
     }

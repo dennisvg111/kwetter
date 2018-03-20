@@ -62,7 +62,7 @@ public class KweetController {
         {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.ok(kweetManager.GetKweetsFromUser(user)).build();
+        return Response.ok(kweetManager.GetKweetsFromUser(user.getId())).build();
     }
 
     @POST
