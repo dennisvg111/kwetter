@@ -13,6 +13,7 @@ import java.util.Date;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class kweetControllerTests {
@@ -33,6 +34,35 @@ public class kweetControllerTests {
         given().contentType("application/json").body(json)
                 .when().post("/11/api/kweets")
                 .then().statusCode(OK)
-                .body("id", not(0), "content", equalTo("kweet message"), "date", CoreMatchers.notNullValue(Date.class));
+                .body(
+                        "id", not(0),
+                        "content", equalTo("kweet message"),
+                        "date", notNullValue(Date.class),
+                        "user", notNullValue(User.class));
+    }
+
+    @Test
+    public void GetAllKweets() throws JsonProcessingException {
+        given()
+                .when().get("/11/api/kweets/all")
+                .then().statusCode(OK)
+                .body(
+                        "id", not(0),
+                        "content", notNullValue(String.class),
+                        "date", notNullValue(Date.class),
+                        "user", notNullValue(User.class));
+    }
+
+    @Test
+    public void GetAllKweetsByUser() throws JsonProcessingException {
+        given()
+                .when().get("/11/api/kweets/users/1")
+                .then().statusCode(OK)
+                .body(
+                        "id", not(0),
+                        "content", notNullValue(String.class),
+                        "date", notNullValue(Date.class),
+                        "user", notNullValue(User.class),
+                        "user", CoreMatchers.hasItem("id", is(1)));
     }
 }
