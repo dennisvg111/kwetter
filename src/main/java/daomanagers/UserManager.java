@@ -4,12 +4,13 @@ import dao.IUserDao;
 import dao.JPA;
 import domain.User;
 
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
+@Stateless
 public class UserManager {
     @JPA
     @Inject

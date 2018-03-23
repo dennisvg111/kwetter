@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @DELETE
-    @Path("/{id}/remove")
+    @Path("/{id}")
     public Response removeUser(@PathParam("id") long id) {
         if (userManager.GetUser(id) == null)
         {

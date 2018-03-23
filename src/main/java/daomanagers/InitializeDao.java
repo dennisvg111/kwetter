@@ -26,13 +26,11 @@ public class InitializeDao {
             User user = userManager.AddUser(normalUser);
             Kweet kweet = new Kweet();
             kweet.setUser(user);
-            kweet.setDate(new Date());
             kweet.setContent("Hello Kwetter!");
             kweetManager.AddKweet(kweet);
 
             kweet = new Kweet();
             kweet.setUser(user);
-            kweet.setDate(new Date());
             kweet.setContent("Goodbye Kwetter!");
             kweetManager.AddKweet(kweet);
 

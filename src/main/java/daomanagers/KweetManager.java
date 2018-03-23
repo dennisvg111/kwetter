@@ -5,12 +5,14 @@ import dao.JPA;
 import domain.Kweet;
 import domain.User;
 
+import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
-@Transactional
+@Stateless
 public class KweetManager {
 
     @JPA
@@ -25,7 +27,13 @@ public class KweetManager {
         return dao.Read(id);
     }
 
-    public Kweet AddKweet(Kweet kweet) { return dao.Create(kweet); }
+    public Kweet AddKweet(Kweet kweet) {
+        if (kweet.getDate() == null)
+        {
+            kweet.setDate(new Date());
+        }
+        return dao.Create(kweet);
+    }
 
     public List<Kweet> getKweets() {
         return dao.All();
