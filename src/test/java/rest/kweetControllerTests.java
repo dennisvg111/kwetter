@@ -24,12 +24,16 @@ public class kweetControllerTests {
     ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
     @Test
-    public void PostKweet() throws JsonProcessingException {
+    public void PostKweet() {
         User user = new User();
         user.setId(1);
-        Kweet kweet = new Kweet(user, "kweet message");
+        Kweet kweet = new Kweet(user , "kweet message");
         String json = null;
-        json = ow.writeValueAsString(kweet);
+        try {
+            json = ow.writeValueAsString(kweet);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         given().contentType("application/json").body(json)
                 .when().post("/11/api/kweets")
                 .then().statusCode(OK)
