@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Role;
 import domain.User;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface IUserDao {
     boolean Follow(Long userId, Long followedUserId);
 
     boolean Unfollow(Long userId, Long followedUserId);
+
+    User SetRoles(User user, Role[] roles);
 }

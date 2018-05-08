@@ -1,6 +1,7 @@
 package dao;
 
 import domain.Kweet;
+import domain.Role;
 import domain.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -28,7 +29,7 @@ public class CollectionUserTests {
     }
 
     private User AddUser() {
-        User user = new User("username" + userDao.All().size(), "password", User.Role.USER);
+        User user = new User("username" + userDao.All().size(), "password", new Role("User"));
         user.setId(userDao.All().size());
         return userDao.Create(user);
     }
@@ -36,7 +37,7 @@ public class CollectionUserTests {
     @Test
     public void CreateUser() {
 
-        User user = new User("Dennis", "test", User.Role.USER);
+        User user = new User("Dennis", "test", new Role("User"));
         User created = userDao.Create(user);
         assertNotNull(created);
 
@@ -58,7 +59,7 @@ public class CollectionUserTests {
     @Test
     public void FindUser() {
 
-        userDao.Create(new User("username", "password", User.Role.USER));
+        userDao.Create(new User("username", "password", new Role("User")));
 
         User found = userDao.FindUser("username");
         assertNotNull(found);
@@ -96,7 +97,7 @@ public class CollectionUserTests {
     @Test
     public void DeleteUser() {
 
-        userDao.Create(new User("username", "password", User.Role.USER));
+        userDao.Create(new User("username", "password", new Role("User")));
 
         int initialLength = userDao.All().size();
         User user = userDao.FindUser("username");

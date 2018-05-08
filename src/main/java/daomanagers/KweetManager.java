@@ -9,11 +9,14 @@ import javax.ejb.Stateless;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @Stateless
-public class KweetManager {
+public class KweetManager implements Serializable {
 
     @JPA
     @Inject
@@ -51,6 +54,8 @@ public class KweetManager {
 
     public List<Kweet> Search(String query)
     {
-        return dao.FindKweets(query);
+        List<Kweet> kweets = dao.FindKweets(query);
+        Collections.sort(kweets);
+        return kweets;
     }
 }

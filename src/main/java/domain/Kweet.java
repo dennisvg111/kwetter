@@ -18,7 +18,6 @@ public class Kweet implements Serializable, Comparable<Kweet> {
     @Id
     private long id;
     private String content;
-    private ArrayList<String> tags;
     private Date date;
     @ManyToOne
     private User user;

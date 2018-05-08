@@ -1,6 +1,7 @@
 package dao;
 
 import domain.Kweet;
+import domain.Role;
 import domain.User;
 
 import javax.persistence.*;
@@ -43,7 +44,7 @@ public class JpaKweetTests {
     }
 
     private Kweet addKweet() {
-        User user = new User("username" + userDao.All().size(), "password", User.Role.USER);
+        User user = new User("username" + userDao.All().size(), "password", new Role("User"));
         userDao.Create(user);
 
         Kweet kweet = new Kweet(user, "Hello testing world #Kwetter");

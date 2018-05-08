@@ -5,6 +5,79 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
 
-  <display-name>Archetype Created Web Application</display-name>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>login.xhtml</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.xhtml</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/403.xhtml</location>
+    </error-page>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>All Access</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <description/>
+            <role-name>USER</role-name>
+            <role-name>MODERATOR</role-name>
+            <role-name>ADMINISTRATOR</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>security_realm</realm-name>
+    </login-config>
+
+    <security-role>
+        <description/>
+        <role-name>USER</role-name>
+    </security-role>
+
+    <security-role>
+        <description/>
+        <role-name>MODERATOR</role-name>
+    </security-role>
+
+    <security-role>
+        <description/>
+        <role-name>ADMINISTRATOR</role-name>
+    </security-role>
+
+    <servlet>
+        <servlet-name>CORS Filter</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+            <param-value>controllers.AccessControlResponseFilter</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CORS Filter</servlet-name>
+        <url-pattern>/11/api/*</url-pattern>
+    </servlet-mapping>
 </web-app>

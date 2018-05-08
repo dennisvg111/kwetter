@@ -5,16 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import domain.Kweet;
 import domain.User;
-import org.hamcrest.CoreMatchers;
+import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 
 import java.util.Date;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.core.IsEqual.equalTo;
 
 public class kweetControllerTests {
     private int OK = 200;
@@ -54,15 +50,13 @@ public class kweetControllerTests {
     }
 
     @Test
-    public void GetAllKweetsByUser() throws JsonProcessingException {
-        given()
-                .when().get("/11/api/kweets/users/1")
-                .then().statusCode(OK)
-                .body(
-                        "id", not(0),
-                        "content", notNullValue(String.class),
-                        "date", notNullValue(Date.class),
-                        "user", notNullValue(User.class),
-                        "user", CoreMatchers.hasItem("id", is(1)));
+    public void postKweetWithEmptyTextShouldReturnBadRequest() {
+        String json = "{ \"text\": \"\", \"user\": { \"id\": \"1\" } }";
+        given().contentType("application/json").body(json)
+                .when().post("/kwetter/api/kweet")
+                .then().statusCode(BAD_REQUEST);
     }
+
+
+
 }

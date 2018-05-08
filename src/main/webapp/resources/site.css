@@ -1,0 +1,45 @@
+.ui-widget-content {
+    background: #3c3f41;
+}
+
+html {
+    background: #2b2b2b;
+    color: #bfd9d0;
+    text-shadow: none;
+}
+
+.ui-datatable-data.ui-widget-content {
+    background: #3c3f41;
+    color: #bfd9d0;
+}
+
+.ui-datatable-data.ui-widget-content > * {
+    color: #3e869f;
+}
+
+.ui-widget [role=columnheader].ui-state-default {
+    background: #80ff80;
+    border: #80ff80 1px solid;
+    color: #2b2b2b;
+    text-shadow: none;
+}
+
+.ui-button.ui-widget {
+    background: #3c3f41;
+    text-shadow: none;
+    color: #80ff80;
+}
+
+.ui-widget .ui-state-highlight .ui-cell-editor-input input, .ui-widget-content .ui-state-highlight {
+    background: #3c3f41;
+    color: #bfd9d0;
+    text-shadow: none;
+}
+
+.ui-growl-item {
+    background: #2b2b2b;
+    color: #80ff80;
+    text-shadow: none;
+    border: #80ff80 1px solid;
+    border-radius: 4px;
+}

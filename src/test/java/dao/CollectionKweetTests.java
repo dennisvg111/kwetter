@@ -1,6 +1,7 @@
 package dao;
 
 import domain.Kweet;
+import domain.Role;
 import domain.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -30,7 +31,7 @@ public class CollectionKweetTests {
     }
 
     private Kweet addKweet() {
-        User user = new User("username" + userDao.All().size(), "password", User.Role.USER);
+        User user = new User("username" + userDao.All().size(), "password", new Role("User"));
         user.setId(userDao.All().size());
         userDao.Create(user);
 

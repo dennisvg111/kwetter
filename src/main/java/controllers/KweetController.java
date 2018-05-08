@@ -4,6 +4,7 @@ import daomanagers.KweetManager;
 import daomanagers.UserManager;
 import domain.Kweet;
 import domain.User;
+import jwt.JwtTokenNeeded;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -65,6 +66,7 @@ public class KweetController {
         return Response.ok(kweetManager.GetKweetsFromUser(user.getId())).build();
     }
 
+    @JwtTokenNeeded
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response postKweet(Kweet kweet) {

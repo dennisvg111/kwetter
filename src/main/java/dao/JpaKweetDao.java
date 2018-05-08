@@ -38,7 +38,10 @@ public class JpaKweetDao extends DaoFacade<Kweet> implements IKweetDao {
         {
             Query query = em.createQuery("SELECT k FROM Kweet k WHERE k.user.id = :id ORDER BY k.date");
             query.setParameter("id", id);
-            return query.getResultList();
+            List<Kweet> kweets = query.getResultList();
+
+            Collections.sort(kweets);
+            return kweets;
         }
         catch (Exception exception)
         {
@@ -72,6 +75,8 @@ public class JpaKweetDao extends DaoFacade<Kweet> implements IKweetDao {
             } catch (Exception exception) {
             }
         }
+
+        feed.addAll(GetKweetsFromUser(user.getId()));
         //Kweet is comparable on date
         Collections.sort(feed);
         return feed;

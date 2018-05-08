@@ -60,7 +60,16 @@ public abstract class DaoFacade<T> {
             try {
                 if (f.get(entity) != null) {
                     if (!(f.get(entity) instanceof Collection) || ((Collection) f.get(entity)).size() > 0) {
-                        f.set(updated, f.get(entity));
+                        if (!f.isAnnotationPresent(DaoIgnore.class))
+                        {
+                            f.set(updated, f.get(entity));
+                            System.out.println("updating:" + f.getName());
+                            System.out.println("new value = " + f.get(entity));
+                        }
+                        if (f.isAnnotationPresent(DaoIgnore.class))
+                        {
+                            System.out.println("ignored: " + f.getName());
+                        }
                     }
                 }
             } catch (IllegalAccessException e) {

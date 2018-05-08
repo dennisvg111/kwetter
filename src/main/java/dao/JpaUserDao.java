@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Role;
 import domain.User;
 
 import javax.ejb.Stateless;
@@ -31,6 +32,13 @@ public class JpaUserDao extends DaoFacade<User> implements IUserDao {
             Query query = em.createQuery("SELECT u FROM User u WHERE UPPER(u.name) = UPPER(:name)");
             query.setParameter("name", name);
             User user = (User) query.getSingleResult();
+            if (user == null)
+            {
+                System.out.println("User could not be found");
+            }
+            else {
+                System.out.println("User found with name " + user.getName());
+            }
             return user;
         }
         catch (Exception e)
@@ -113,5 +121,17 @@ public class JpaUserDao extends DaoFacade<User> implements IUserDao {
         {
             return false;
         }
+    }
+
+    @Override
+    public User SetRoles(User user, Role[] roles) {
+        user = Read(user.getId());
+        user.getRoles().clear();
+        em.merge(user);
+        for (Role role : roles)
+        {
+            user.getRoles().add(new Role(role.getName()));
+        }
+        return em.merge(user);
     }
 }

@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Role;
 import domain.User;
 
 import java.util.ArrayList;
@@ -108,5 +109,16 @@ public class CollectionUserDao implements IUserDao {
         }
         user.RemoveFollowing(otherUser);
         return true;
+    }
+
+    @Override
+    public User SetRoles(User user, Role[] roles) {
+        user = Read(user.getId());
+        user.getRoles().clear();
+        for (Role role : roles)
+        {
+            user.getRoles().add(new Role(role.getName()));
+        }
+        return user;
     }
 }

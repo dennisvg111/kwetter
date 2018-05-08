@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Administration Panel</title>
+    <h:outputStylesheet name="site.css"/>
+</h:head>
+
+<h:body>
+    <div class="administration">
+        <div class="logout">
+            <h1>Kwetter Administration Panel</h1>
+
+            <span>
+                Logged in as
+                <h:outputText value="#{authBean.userPrincipalName}" style="font-weight: bold;"/>
+            </span>
+
+
+            <h:form id="logout-form">
+                <p:commandButton value="Logout" action="#{authBean.logout}"/>
+            </h:form>
+        </div>
+
+
+
+        <div class="kweets__list">
+            <div class="administration__kweets__header">
+                <h2>Kweets</h2>
+            </div>
+
+            <h:form id="kweets-form">
+                <p:growl id="username-update" showDetail="true"/>
+
+                <p:dataTable id="kweets-datatable" var="kweet" editable="true" editMode="cell"
+                             value="#{kweetsBean.kweets}">
+                    <p:ajax event="cellEdit" listener="#{kweetsBean.onTextCellEdit}"
+                            update=":kweets-form:username-update"/>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{kweet.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Text">
+                        <p:cellEditor>
+                            <f:facet name="output"> <h:outputText value="#{kweet.content}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{kweet.content}"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="User">
+                        <h:outputText value="#{kweet.user.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Date">
+                        <h:outputText value="#{kweet.date.toLocaleString()}"/>
+                    </p:column>
+
+                    <p:column headerText="Action">
+                        <p:commandButton value="Remove" actionListener="#{kweetsBean.onRemoveKweet(kweet)}"
+                                         update=":kweets-form:kweets-datatable" style="width: 100%;"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="users__list">
+            <div class="administration__users__header">
+                <h2>Users</h2>
+
+                <h:form id="user-form">
+                    <p:growl id="add-user" showDetail="true"/>
+
+                    <p:inputText type="text" value="#{usersBean.username}" placeholder="Username"
+                                 required="true" style="margin-right: 10px;"/>
+                    <p:inputText type="password" value="#{usersBean.password}" placeholder="Password"
+                                 required="true" style="margin-right: 10px;"/>
+
+                    <p:commandButton value="Add" update=":users-form:users-datatable" style="margin-left: auto;"
+                                     actionListener="#{usersBean.onAddUser(usersBean.username, usersBean.password)}"/>
+                </h:form>
+
+                <h:form id="user-groups-form">
+                    <p:growl id="choose-role" showDetail="true"/>
+
+                    <h:outputText value="User: "/>
+                    <p:selectBooleanCheckbox value="#{usersBean.userRole}">
+                        <f:attribute name="group" value="user"/>
+                        <p:ajax update="choose-role" listener="#{usersBean.onUserGroupEdit}"/>
+                    </p:selectBooleanCheckbox>
+
+                    <h:outputText value="Moderator: "/>
+                    <p:selectBooleanCheckbox value="#{usersBean.moderatorRole}">
+                        <f:attribute name="group" value="moderator"/>
+                        <p:ajax update="choose-role" listener="#{usersBean.onUserGroupEdit}"/>
+                    </p:selectBooleanCheckbox>
+
+                    <h:outputText value="Admin: "/>
+                    <p:selectBooleanCheckbox value="#{usersBean.administratorRole}">
+                        <f:attribute name="group" value="admin"/>
+                        <p:ajax update="choose-role" listener="#{usersBean.onUserGroupEdit}"/>
+                    </p:selectBooleanCheckbox>
+
+                    <p:commandButton style="margin-left: auto;" value="Update"
+                                     update=":user-groups-form:choose-role :users-form:users-datatable"
+                                     actionListener="#{usersBean.onSaveUser}"/>
+                </h:form>
+            </div>
+
+            <h:form id="users-form">
+                <p:growl id="role-update" showDetail="true"/>
+
+                <p:dataTable id="users-datatable" var="user" selectionMode="single" rowKey="#{user.id}"
+                             value="#{usersBean.users}">
+                    <p:ajax event="rowSelect" listener="#{usersBean.selectUser}"
+                            update=":kweets-form:kweets-datatable"/>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{user.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Username">
+                        <h:outputText value="#{user.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Groups">
+                        <p:repeat value="#{user.roles}" var="role">
+                            <h:outputText value="#{role.name} "/>
+                        </p:repeat>
+                    </p:column>
+
+                    <p:column headerText="Action">
+                        <p:commandButton value="Remove" actionListener="#{usersBean.onRemoveUser(user)}"
+                                         update=":users-form:users-datatable :kweets-form:kweets-datatable"
+                                         style="width: 100%;"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+
+</html>

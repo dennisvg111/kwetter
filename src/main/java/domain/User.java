@@ -1,15 +1,14 @@
 package domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dao.DaoIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,13 @@ public class User implements Serializable {
     private String hashedPassword;
     private String bio;
 
+    @ManyToMany
+    @JoinTable(joinColumns = @JoinColumn(table = "user", name = "username", referencedColumnName = "name"),
+            inverseJoinColumns = @JoinColumn(table = "role", name = "rolename", referencedColumnName = "name"))
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @DaoIgnore
+    private List<Role> roles = new ArrayList<>();
+
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "following")
     @JsonIgnore
     private List<User> followers = new ArrayList<>();
@@ -40,25 +46,24 @@ public class User implements Serializable {
     private String location;
     private String website;
     private String profilePicture;
-    private Role role;
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     @JsonIgnore
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Kweet> kweets = new ArrayList<>();
 
-    public enum Role {
-        USER,
-        ADMINISTRATOR
-    }
-
-    public User(String name, String hashedPassword, Role role) {
+    public User(String name, String hashedPassword, Role... roles) {
         this.name = name;
         this.hashedPassword = hashedPassword;
-        this.role = role;
+        this.roles = new ArrayList<>();
+        for (Role role : roles)
+        {
+            this.roles.add(new Role(role.getName()));
+        }
     }
 
     public User() {
+
     }
 
     public long getId() {
@@ -165,13 +170,11 @@ public class User implements Serializable {
         this.profilePicture = profilePicture;
     }
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    public void setRoles(List<Role> roles) { this.roles = roles; }
 
     public List<Kweet> getKweets() {
         return kweets;

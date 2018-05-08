@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Role;
 import domain.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,7 +43,7 @@ public class JpaUserTests {
 
     private User AddUser()
     {
-        User user = new User("username" + userDao.All().size(), "password", User.Role.USER);
+        User user = new User("username" + userDao.All().size(), "password", new Role("User"));
         return userDao.Create(user);
     }
 
@@ -50,7 +51,7 @@ public class JpaUserTests {
     public void CreateUser() {
         transaction.begin();
 
-        User user = new User("username" + userDao.All().size(), "password", User.Role.USER);
+        User user = new User("username" + userDao.All().size(), "password", new Role("User"));
         User created = userDao.Create(user);
         assertNotNull(created);
 
@@ -76,7 +77,7 @@ public class JpaUserTests {
     public void FindUser() {
         transaction.begin();
 
-        userDao.Create(new User("username", "password", User.Role.USER));
+        userDao.Create(new User("username", "password", new Role("User")));
 
         User found = userDao.FindUser("username");
         assertNotNull(found);
@@ -120,7 +121,7 @@ public class JpaUserTests {
     public void DeleteUser() {
         transaction.begin();
 
-        userDao.Create(new User("username", "password", User.Role.USER));
+        userDao.Create(new User("username", "password", new Role("User")));
 
         int initialLength = userDao.All().size();
         User user = userDao.FindUser("username");
