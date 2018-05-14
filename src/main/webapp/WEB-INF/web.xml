@@ -79,5 +79,8 @@
     <servlet-mapping>
         <servlet-name>CORS Filter</servlet-name>
         <url-pattern>/11/api/*</url-pattern>
+        <url-pattern>/11/live/*</url-pattern>
+        <url-pattern>/11/*</url-pattern>
+        <url-pattern>/11/*/*</url-pattern>
     </servlet-mapping>
 </web-app>
