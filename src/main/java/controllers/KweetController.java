@@ -12,6 +12,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static controllers.SocketController.sendKweetToUsers;
+
 @Path("/kweets")
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
@@ -76,6 +78,10 @@ public class KweetController {
 
         Kweet postedKweet = kweetManager.AddKweet(kweet);
 
+        User user = userManager.GetUser(kweet.getUser().getId());
+        postedKweet.setUser(user);
+        sendKweetToUsers(postedKweet, user.getFollowers());
+
         return Response.ok(postedKweet).build();
     }
 
@@ -93,7 +99,7 @@ public class KweetController {
 
     @DELETE
     @Path("/{id}/remove")
-    public Response removeUser(@PathParam("id") long id) {
+    public Response removeKweet(@PathParam("id") long id) {
         if (kweetManager.getKweet(id) == null)
         {
             return Response.status(Response.Status.BAD_REQUEST).build();
