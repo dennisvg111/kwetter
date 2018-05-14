@@ -2,10 +2,7 @@ package domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -59,6 +56,17 @@ public class Kweet implements Serializable, Comparable<Kweet> {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Transient
+    public HateLink[] getLinks()
+    {
+        return new HateLink[] {
+                new HateLink("/11/api/kweets/" + this.id, "self", "GET"),
+                new HateLink("/11/api/kweets/" + this.id + "/remove", "remove", "DELETE"),
+                new HateLink("/11/api/kweets", "edit", "PUT"),
+                new HateLink("/11/api/users/" + this.user.getId(), "user", "GET"),
+        };
     }
 
     @Override

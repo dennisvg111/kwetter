@@ -183,4 +183,20 @@ public class User implements Serializable {
     public void setKweets(ArrayList<Kweet> kweets) {
         this.kweets = kweets;
     }
+
+
+
+    @Transient
+    public HateLink[] getLinks()
+    {
+        return new HateLink[] {
+                new HateLink("/11/api/users/" + this.id, "self", "GET"),
+                new HateLink("/11/api/users/" + this.id, "remove", "DELETE"),
+                new HateLink("/11/api/users", "edit", "PUT"),
+                new HateLink("/11/api/kweets/users/" + this.id, "kweets", "GET"),
+                new HateLink("/11/api/kweets/feed/" + this.id, "feed", "GET"),
+                new HateLink("/11/api/users/" + this.id + "/following", "following", "GET"),
+                new HateLink("/11/api/users/" + this.id + "/followers", "followers", "GET")
+        };
+    }
 }
